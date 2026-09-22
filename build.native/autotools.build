@@ -8,8 +8,5 @@ make -j$(nproc)
 make DESTDIR=/tmp/stage install
 rm -r /tmp/stage/usr/share/info
 rm -r /tmp/stage/usr/share/man
-mkdir -p /tmp/stage/etc/installer/autotools
-echo 'autotools 2.73 musl m4' > /tmp/stage/etc/installer/autotools/pkinfo
 cd $wd
-./flashpack /tmp/stage
-cp /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/autotools.yspkg" --name "autotools" --version "2.73" --abi yspm-abi-1 --arch x86_64 --depends "m4"
