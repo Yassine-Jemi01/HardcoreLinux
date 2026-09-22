@@ -8,9 +8,6 @@ meson .. --prefix=/usr --wipe -Dc_link_args="-Wl,-rpath-link,src/GLdispatch"
 ninja
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/libglvnd
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'libglvnd 1.7.0 musl' > /tmp/stage/etc/installer/libglvnd/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/libglvnd.yspkg" --name "libglvnd" --version "1.7.0" --abi yspm-abi-1 --arch x86_64
