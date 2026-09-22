@@ -9,9 +9,6 @@ meson setup .. --prefix=/usr --reconfigure
 ninja
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/seatd
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'seatd 0.9.3 musl' > /tmp/stage/etc/installer/seatd/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/seatd.yspkg" --name "seatd" --version "0.9.3" --abi yspm-abi-1 --arch x86_64
