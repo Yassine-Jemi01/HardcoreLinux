@@ -28,6 +28,12 @@ UDEVD
 chmod 0755 "$root/system/scripts/00003-udevd"
 POSTINSTALL
 chmod 0755 "$scripts/postinstall"
+cat > "$scripts/postremove" <<'POSTREMOVE'
+#!/bin/sh
+root=${YSPM_ROOT:-/}
+rm -f "$root/system/scripts/00003-udevd"
+POSTREMOVE
+chmod 0755 "$scripts/postremove"
 
 cd "$wd"
 yspm build --root /tmp/stage --output "$wd/udev.yspkg" --name "udev" --version "3.2.14" --abi yspm-abi-1 --arch x86_64 --depends "musl" --scripts "$scripts"
