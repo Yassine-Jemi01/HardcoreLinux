@@ -7,5 +7,6 @@ rm -rf /tmp/stage
 make -j$(nproc)
 make DESTDIR=/tmp/stage install
 rm /tmp/stage
+mkdir -p /tmp/stage
 cd $wd
 yspm build --root /tmp/stage --output "$wd/perl.yspkg" --name "perl" --version "5.44.0" --abi yspm-abi-1 --arch x86_64 --depends "m4,zlib"
