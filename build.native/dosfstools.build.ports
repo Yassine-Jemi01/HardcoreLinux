@@ -11,9 +11,6 @@ rm -rf /tmp/stage
 make -j$(nproc)
 make DESTDIR=/tmp/stage install
 rm /tmp/stage
-mkdir -p /tmp/stage/etc/installer/dosfstools
-echo 'dosfstools 4.2 musl' > /tmp/stage/etc/installer/dosfstools/pkinfo
 rm -r /tmp/stage/usr/share
 cd $wd
-./flashpack /tmp/stage
-cp /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/dosfstools.yspkg" --name "dosfstools" --version "4.2" --abi yspm-abi-1 --arch x86_64 --depends "musl"
