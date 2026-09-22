@@ -9,8 +9,5 @@ make DESTDIR=/tmp/stage install
 rm -rf /tmp/stage/usr/share
 find /tmp/stage -type d -name __pycache__ -exec rm -r {} +
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-mkdir -p /tmp/stage/etc/installer/python3
-echo 'python3 3.16 musl openssl zlib libffi' > /tmp/stage/etc/installer/python3/pkinfo
-./flashpack /tmp/stage
 cd $wd
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/python3.yspkg" --name "python3" --version "3.16" --abi yspm-abi-1 --arch x86_64 --depends "openssl,zlib,libffi"
