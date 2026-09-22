@@ -11,6 +11,7 @@ rm -rf /tmp/stage
 make -j$(nproc)
 make DESTDIR=/tmp/stage install
 rm /tmp/stage
+mkdir -p /tmp/stage
 rm -r /tmp/stage/usr/share
 cd $wd
 yspm build --root /tmp/stage --output "$wd/dosfstools.yspkg" --name "dosfstools" --version "4.2" --abi yspm-abi-1 --arch x86_64 --depends "musl"
