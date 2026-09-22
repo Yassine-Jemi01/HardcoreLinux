@@ -11,9 +11,6 @@ meson setup .. --prefix=/usr -Ddebug-gui=false -Dmtdev=false -Dlibwacom=false
 ninja
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/libinput
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'libinput 1.31 musl libevdev udev' > /tmp/stage/etc/installer/libinput/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/libinput.yspkg" --name "libinput" --version "1.31" --abi yspm-abi-1 --arch x86_64 --depends "libevdev,udev"

@@ -11,10 +11,7 @@ make DESTDIR=/tmp/stage install
 rm -rf /tmp/stage/usr/share/doc
 rm -rf /tmp/stage/usr/share/man
 rm -rf /tmp/stage/usr/share/info
-mkdir -p /tmp/stage/etc/installer/bison
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
 find /tmp/stage -name *.la -exec rm {} \;
-echo 'bison 3.8 musl' > /tmp/stage/etc/installer/bison/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/bison.yspkg" --name "bison" --version "3.8" --abi yspm-abi-1 --arch x86_64

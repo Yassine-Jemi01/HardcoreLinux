@@ -10,9 +10,6 @@ mkdir build && cd build
 meson setup .. -Ddocumentation=false -Dprefix=/usr --reconfigure
 ninja
 meson install --destdir=/tmp/stage
-mkdir -p /tmp/stage/etc/installer/libwayland
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'libwayland 1.26.0 musl zlib libpciaccess libdrm libffi' > /tmp/stage/etc/installer/libwayland/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/libwayland.yspkg" --name "libwayland" --version "1.26.0" --abi yspm-abi-1 --arch x86_64 --depends "zlib,libpciaccess,libdrm,libffi"

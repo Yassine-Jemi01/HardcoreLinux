@@ -18,9 +18,10 @@ fi
 rm -rf "$src" "$stage"
 git clone --depth 1 https://github.com/Yassine-Jemi01/yspm.git "$src"
 cd "$src"
-git checkout --detach 6a7535f6a6206b375eb0e1f6ba7cabc649f69e99
+git fetch --depth 1 origin 81d06bc1bfdf83053e3ab1b31585f7de8af5f941
+git checkout --detach 81d06bc1bfdf83053e3ab1b31585f7de8af5f941
 
-mkdir -p "$stage/usr/bin" "$stage/etc/installer/yspm"
+mkdir -p "$stage/usr/bin"
 
 CGO_ENABLED=0 GOTOOLCHAIN=local "$go_bin" build \
     -trimpath \
@@ -30,13 +31,8 @@ CGO_ENABLED=0 GOTOOLCHAIN=local "$go_bin" build \
     ./cmd/yspm
 
 chmod 0755 "$stage/usr/bin/yspm"
-printf '%s\n' '#!/bin/sh' 'exit 0' > "$stage/etc/installer/yspm/install"
-chmod 0711 "$stage/etc/installer/yspm/install"
-printf '%s\n' 'yspm 0.2.0 go' > "$stage/etc/installer/yspm/pkinfo"
-printf '%s\n' '#!/bin/sh' 'rm -f /usr/bin/yspm' > "$stage/etc/installer/yspm/uninstall"
-chmod 0711 "$stage/etc/installer/yspm/uninstall"
 
 cd "$wd"
-./flashpack "$stage"
-cp "$stage"/*.tar .
+"$stage/usr/bin/yspm" build --root "$stage" --output "$wd/yspm.yspkg" --name "yspm" --version "0.2.0" --abi yspm-abi-1 --arch x86_64
+
 rm -rf "$src"

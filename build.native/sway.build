@@ -8,9 +8,30 @@ cd build
 meson setup .. --prefix=/usr --reconfigure
 ninja
 meson install --destdir=/tmp/stage
-mkdir -p /tmp/stage/etc/installer/sway
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'sway 1.12 musl wlroots pango' > /tmp/stage/etc/installer/sway/pkinfo
-cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+
+scripts=/tmp/yspm-scripts/sway
+rm -rf "$scripts"
+mkdir -p "$scripts"
+cat > "$scripts/postinstall" <<'POSTINSTALL'
+#!/bin/sh
+root=${YSPM_ROOT:-/}
+mv "$root/usr/bin/sway" "$root/usr/bin/sway.bin"
+cat > "$root/usr/bin/sway" <<'WRAPPER'
+#!/bin/sh
+export WLR_RENDERER=pixman
+exec /usr/bin/sway.bin "$@"
+WRAPPER
+chmod 0755 "$root/usr/bin/sway"
+POSTINSTALL
+chmod 0755 "$scripts/postinstall"
+cat > "$scripts/postremove" <<'POSTREMOVE'
+#!/bin/sh
+root=${YSPM_ROOT:-/}
+rm -f "$root/usr/bin/sway.bin"
+POSTREMOVE
+chmod 0755 "$scripts/postremove"
+
+cd "$wd"
+yspm build --root /tmp/stage --output "$wd/sway.yspkg" --name "sway" --version "1.12" --abi yspm-abi-1 --arch x86_64 --depends "wlroots,pango,udev" --scripts "$scripts"
+rm -rf "$scripts"

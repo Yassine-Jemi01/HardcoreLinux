@@ -10,9 +10,6 @@ mkdir build && cd build
 meson setup .. --reconfigure -Dtests=false -Dprefix=/usr
 ninja
 meson install --destdir=/tmp/stage
-mkdir -p /tmp/stage/etc/installer/wayland-protocols
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'wayland-protocols 1.41' > /tmp/stage/etc/installer/wayland-protocols/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/wayland-protocols.yspkg" --name "wayland-protocols" --version "1.41" --abi yspm-abi-1 --arch x86_64

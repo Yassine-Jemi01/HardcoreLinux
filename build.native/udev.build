@@ -1,5 +1,3 @@
-
-
 #!/bin/sh
 
 wd=$(pwd)
@@ -10,10 +8,33 @@ make -j$(nproc)
 make DESTDIR=/tmp/stage install
 rm -r /tmp/stage/usr/share
 mv /tmp/stage/usr/etc /tmp/stage/
-mkdir -p /tmp/stage/etc/installer/udev
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
 find /tmp/stage -name *.la -exec rm {} \;
-echo 'eudev 3.2.14 musl' > /tmp/stage/etc/installer/udev/pkinfo
-cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+
+scripts=/tmp/yspm-scripts/udev
+rm -rf "$scripts"
+mkdir -p "$scripts"
+cat > "$scripts/postinstall" <<'POSTINSTALL'
+#!/bin/sh
+root=${YSPM_ROOT:-/}
+mkdir -p "$root/system/scripts"
+cat > "$root/system/scripts/00003-udevd" <<'UDEVD'
+#!/bin/sh
+udevd --daemon
+udevadm trigger --type=subsystems --action=add
+udevadm trigger --type=devices --action=add
+udevadm settle
+UDEVD
+chmod 0755 "$root/system/scripts/00003-udevd"
+POSTINSTALL
+chmod 0755 "$scripts/postinstall"
+cat > "$scripts/postremove" <<'POSTREMOVE'
+#!/bin/sh
+root=${YSPM_ROOT:-/}
+rm -f "$root/system/scripts/00003-udevd"
+POSTREMOVE
+chmod 0755 "$scripts/postremove"
+
+cd "$wd"
+yspm build --root /tmp/stage --output "$wd/udev.yspkg" --name "udev" --version "3.2.14" --abi yspm-abi-1 --arch x86_64 --depends "musl" --scripts "$scripts"
+rm -rf "$scripts"

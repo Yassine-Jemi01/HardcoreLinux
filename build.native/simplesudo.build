@@ -5,10 +5,8 @@
 echo $dir
 wd=$(pwd)
 cd $dir
-mkdir -p /tmp/stage/etc/installer/sudo /tmp/stage/usr/bin/
+mkdir -p /tmp/stage/usr/bin/
 gcc -Os sudo.c -o /tmp/stage/usr/bin/sudo
-echo "simpleSUdo 0.0.1 musl" > /tmp/stage/etc/installer/sudo/pkinfo
 for file in $(find /tmp/stage -type f); do if [ -x $file ]; then strip $file; fi; done
 cd $wd
-./flashpack /tmp/stage
-cp /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/sudo.yspkg" --name "sudo" --version "0.0.1" --abi yspm-abi-1 --arch x86_64 --depends "musl"

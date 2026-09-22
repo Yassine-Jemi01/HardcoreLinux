@@ -11,9 +11,6 @@ meson setup .. --prefix=/usr -Dtests=disabled -Ddocumentation=disabled
 ninja
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/libevdev
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'libevdev 1.13.6 musl' > /tmp/stage/etc/installer/libevdev/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/libevdev.yspkg" --name "libevdev" --version "1.13.6" --abi yspm-abi-1 --arch x86_64

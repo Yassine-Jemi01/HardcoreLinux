@@ -7,8 +7,6 @@ rm -rf /tmp/stage
 make -j$(nproc)
 make DESTDIR=/tmp/stage install
 rm /tmp/stage
-mkdir -p /tmp/stage/etc/installer/perl
-echo 'perl 5.44.0 musl m4 zlib' > /tmp/stage/etc/installer/perl/pkinfo
+mkdir -p /tmp/stage
 cd $wd
-./flashpack /tmp/stage
-cp /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/perl.yspkg" --name "perl" --version "5.44.0" --abi yspm-abi-1 --arch x86_64 --depends "m4,zlib"

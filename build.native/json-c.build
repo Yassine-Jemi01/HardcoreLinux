@@ -14,9 +14,7 @@ meson install --destdir=/tmp/stage
 cp $wd/$dir/*/json_*.h /tmp/stage/usr/include
 
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/json-c
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'json-c musl' > /tmp/stage/etc/installer/json-c/pkinfo
 
 mkdir -p /tmp/stage/usr/lib/pkgconfig/
 cat > /tmp/stage/usr/lib/pkgconfig/json-c.pc <<'EOF'
@@ -33,5 +31,4 @@ Cflags: -I${includedir}
 EOF
 
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/json-c.yspkg" --name "json-c" --version "0.19" --abi yspm-abi-1 --arch x86_64 --depends "musl"

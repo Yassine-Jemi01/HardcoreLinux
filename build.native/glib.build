@@ -10,12 +10,9 @@ mkdir build && cd build
 meson setup .. --prefix=/usr -Dtests=false --reconfigure
 ninja
 meson install --destdir=/tmp/stage
-mkdir -p /tmp/stage/etc/installer/glib
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'glib 2.89.3 musl' > /tmp/stage/etc/installer/glib/pkinfo
 rm -rf /tmp/stage/usr/share/man
 rm -rf /tmp/stage/usr/share/info
 rm -rf /tmp/stage/usr/share/doc
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/glib.yspkg" --name "glib" --version "2.89.3" --abi yspm-abi-1 --arch x86_64

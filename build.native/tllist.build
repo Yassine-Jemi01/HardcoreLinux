@@ -9,9 +9,6 @@ meson setup .. --prefix=/usr --reconfigure
 ninja
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/tllist
 find /tmp/stage -exec strip --strip-all {} \;
-echo 'tllist 1.1.0' > /tmp/stage/etc/installer/tllist/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/tllist.yspkg" --name "tllist" --version "1.1.0" --abi yspm-abi-1 --arch x86_64

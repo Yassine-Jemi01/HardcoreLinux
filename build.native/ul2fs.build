@@ -10,8 +10,5 @@ rm -rf /tmp/stage
 mkdir -p /tmp/stage/sbin
 gcc fuse.c -Ofast -lfuse3 -w -o /tmp/stage/sbin/ul2fs
 gcc main.c -Ofast -lfuse3 -w -o /tmp/stage/sbin/mkfs.ul2fs
-mkdir -p /tmp/stage/etc/installer/ul2fs
-echo 'ul2fs 0.3.0 musl' > /tmp/stage/etc/installer/ul2fs/pkinfo
 cd $wd
-./flashpack /tmp/stage
-cp /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/ul2fs.yspkg" --name "ul2fs" --version "0.3.0" --abi yspm-abi-1 --arch x86_64
