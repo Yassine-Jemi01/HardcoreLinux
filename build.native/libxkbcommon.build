@@ -11,10 +11,7 @@ meson setup .. -Dprefix=/usr -Denable-x11=false -Denable-docs=false  -Ddefault-l
 cp $wd/yacc-wrapper ../scripts/yacc-wrapper
 ninja
 meson install --destdir=/tmp/stage > /dev/null
-mkdir -p /tmp/stage/etc/installer/libxkbcommon
 find /tmp/stage -name '*.so' -exec strip --strip-all {} \;
 find /tmp/stage -name '*.la' -exec rm {} \;
-echo 'libxkbcommon 1.14.0-beta musl zlib libffi libwayland wayland-protocols' > /tmp/stage/etc/installer/libxkbcommon/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/libxkbcommon.yspkg" --name "libxkbcommon" --version "1.14.0-beta" --abi yspm-abi-1 --arch x86_64 --depends "zlib,libffi,libwayland,wayland-protocols"
