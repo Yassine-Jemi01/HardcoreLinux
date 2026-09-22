@@ -33,6 +33,6 @@ CGO_ENABLED=0 GOTOOLCHAIN=local "$go_bin" build \
 chmod 0755 "$stage/usr/bin/yspm"
 
 cd "$wd"
-yspm build --root "$stage" --output "$wd/yspm.yspkg" --name "yspm" --version "0.2.0" --abi yspm-abi-1 --arch x86_64
+"$stage/usr/bin/yspm" build --root "$stage" --output "$wd/yspm.yspkg" --name "yspm" --version "0.2.0" --abi yspm-abi-1 --arch x86_64
 
 rm -rf "$src"
