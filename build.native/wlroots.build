@@ -8,9 +8,6 @@ cd build
 meson setup .. --prefix=/usr --wipe --reconfigure -Dbackends=libinput,drm
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/wlroots
 find /tmp/stage -name *.so -exec strip --strip-all {} \;
-echo 'wlroots 0.20.0 musl libevdev udev libinput libwayland libdrm' > /tmp/stage/etc/installer/wlroots/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/wlroots.yspkg" --name "wlroots" --version "0.20.0" --abi yspm-abi-1 --arch x86_64 --depends "musl,libevdev,udev,libinput,libwayland,libdrm"
