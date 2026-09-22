@@ -9,9 +9,6 @@ meson setup .. --prefix=/usr --reconfigure
 ninja
 meson install --destdir=/tmp/stage
 rm -r /tmp/stage/usr/share
-mkdir -p /tmp/stage/etc/installer/fcft
 find /tmp/stage -name '*.so*' -exec strip --strip-all {} \;
-echo 'fcft 3.3.3 pixman libcairo fontconfig fribidi harfbuzz' > /tmp/stage/etc/installer/fcft/pkinfo
 cd $wd
-./flashpack /tmp/stage
-mv /tmp/stage/*.tar .
+yspm build --root /tmp/stage --output "$wd/fcft.yspkg" --name "fcft" --version "3.3.3" --abi yspm-abi-1 --arch x86_64 --depends "pixman,libcairo_png,fontconfig,fribidi,harfbuzz"
