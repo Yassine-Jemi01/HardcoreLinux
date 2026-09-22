@@ -25,6 +25,12 @@ WRAPPER
 chmod 0755 "$root/usr/bin/sway"
 POSTINSTALL
 chmod 0755 "$scripts/postinstall"
+cat > "$scripts/postremove" <<'POSTREMOVE'
+#!/bin/sh
+root=${YSPM_ROOT:-/}
+rm -f "$root/usr/bin/sway.bin"
+POSTREMOVE
+chmod 0755 "$scripts/postremove"
 
 cd "$wd"
 yspm build --root /tmp/stage --output "$wd/sway.yspkg" --name "sway" --version "1.12" --abi yspm-abi-1 --arch x86_64 --depends "wlroots,pango,udev" --scripts "$scripts"
