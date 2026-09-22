@@ -105,7 +105,7 @@ jobs:
       - name: Rebuild bootable ISO
         run: |
           set +e
-          xorriso -indev /tmp/chimera-gnome.iso -outdev "$PWD/HardcoreLinux-ObsidianCore-GNOME.iso" -boot_image any replay -map "$PWD/iso-tree" / -volid HARDCORE_LINUX -commit -end
+          xorriso -indev /tmp/chimera-gnome.iso -outdev "$PWD/HardcoreLinux-ObsidianCore-GNOME.iso" -boot_image any replay -map "$PWD/iso-tree" / -volid CHIMERA_LIVE -commit -end
           rc=$?
           set -e
           test -s HardcoreLinux-ObsidianCore-GNOME.iso
