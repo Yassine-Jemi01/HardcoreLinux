@@ -8,7 +8,7 @@ cd build
 meson setup .. --prefix=/usr --reconfigure
 ninja
 meson install --destdir=/tmp/stage
-find /tmp/stage -name *.so -exec strip --strip-all {} ;
+find /tmp/stage -name *.so -exec strip --strip-all {} \;
 
 scripts=/tmp/yspm-scripts/sway
 rm -rf "$scripts"
